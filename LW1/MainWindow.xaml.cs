@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace InformationProtection_LWs
+namespace LW1
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
