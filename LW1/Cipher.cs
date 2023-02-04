@@ -23,6 +23,12 @@ namespace LW1
 
             foreach (char symbol in inputLine)
             {
+                if (symbol == ' ')
+                {
+                    outputLine += ' ';
+                    continue;
+                }
+
                 // проходим по столбикам
                 bool isFind = false;
                 for (int j = 0; j < matrix.GetLength(1) && !isFind; j++)
