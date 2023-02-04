@@ -43,7 +43,7 @@
         </Grid>
 
         <TextBlock Text="Ввод" Grid.Row="2" Grid.Column="1"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Height="40" Name="tb_in"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Height="40" Name="tb_in" TextChanged="Encrypt_TextChanged"/>
 
         <TextBlock Text="Вывод" Grid.Row="4" Grid.Column="1"/>
         <TextBox Grid.Row="5" Grid.Column="1" Height="40" Name="tb_out" IsReadOnly="True"/>
