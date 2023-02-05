@@ -12,6 +12,9 @@ namespace LW1
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly int _tableHeight = 5;
+        private readonly int _tableWidth = 5;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -21,14 +24,16 @@ namespace LW1
 
         private void CreateTBs()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < _tableHeight; i++)
             {
-                for (int j = 0; j < 7; j++)
+                for (int j = 0; j < _tableWidth; j++)
                 {
                     TextBox tb = new()
                     {
                         Tag = i.ToString() + j.ToString(),
                     };
+
+                    tb.TextChanged += Encrypt_TextChanged;
 
                     Grid.SetRow(tb, i);
                     Grid.SetColumn(tb, j);
@@ -40,7 +45,7 @@ namespace LW1
 
         private bool MakeTable(out char[,] outTable)
         {
-            outTable = new char[4, 7];
+            outTable = new char[_tableHeight, _tableWidth];
             foreach (var item in grid_table.Children)
             {
                 if (item is TextBox tb)
