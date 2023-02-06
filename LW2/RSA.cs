@@ -5,14 +5,13 @@ namespace LW2
 {
     public class RSA
     {
-        public BigInteger E => e;
-        public BigInteger N => n;
+        public BigInteger p;
+        public BigInteger q;
+        public BigInteger e;
+        public BigInteger n;
+        public BigInteger d;
 
-        private BigInteger p;
-        private BigInteger q;
-        private BigInteger e;
-        private BigInteger n;
-        private BigInteger d;
+        private bool _isInitialized = false;
 
         /// <summary>
         /// Return private key d
@@ -27,6 +26,9 @@ namespace LW2
 
         public string Encrypt(string s)
         {
+            if (!_isInitialized)
+                throw new Exception("Keys are not initialized");
+
             return TransferNumberArrayToString(EncryptNumberArray(TransferStringToNumberArray(s)));
         }
 
@@ -38,6 +40,7 @@ namespace LW2
             do
             {
                 res = rn.Next();
+                //res = t + 1;
             } while (NOD(t, res) != 1);
             return res;
         }

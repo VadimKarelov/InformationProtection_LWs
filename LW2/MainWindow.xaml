@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LW2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="LW2" Height="500" Width="400" FontSize="16" Background="Bisque">
+    <Grid Margin="80">
+        <StackPanel>
+            <TextBlock Text="Текст для шифровки"/>
+            <TextBox Name="tb_in" TextChanged="Encrypt_TextChanged"/>
 
+            <TextBlock Text="Число p"/>
+            <TextBox Name="tb_p" IsReadOnly="True" Background="LightBlue"/>
+
+            <TextBlock Text="Число q"/>
+            <TextBox Name="tb_q" IsReadOnly="True" Background="LightBlue"/>
+
+            <TextBlock Text="Ключ e (публичный)"/>
+            <TextBox Name="tb_e" IsReadOnly="True" Background="LightBlue"/>
+
+            <TextBlock Text="Ключ n (публичный)"/>
+            <TextBox Name="tb_n" IsReadOnly="True" Background="LightBlue"/>
+
+            <TextBlock Text="Ключ d (приватный)"/>
+            <TextBox Name="tb_d" IsReadOnly="True" Background="LightBlue"/>
+
+            <TextBlock Text="Зашифрованный текст"/>
+            <TextBox Name="tb_out" IsReadOnly="True" Background="LightCyan"/>
+        </StackPanel>
     </Grid>
 </Window>
