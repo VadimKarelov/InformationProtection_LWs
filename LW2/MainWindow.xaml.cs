@@ -1,7 +1,5 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 
