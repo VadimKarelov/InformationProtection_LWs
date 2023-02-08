@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace LW2
 {
@@ -20,10 +22,21 @@ namespace LW2
 
         private void Encrypt_TextChanged(object sender, TextChangedEventArgs e)
         {
+            Encrypt();
+        }
+
+        private void Encrypt()
+        {
             if (GetPQ(out BigInteger p, out BigInteger q))
             {
                 tb_out.Text = rsa.Encrypt(tb_in.Text);
             }
+        }
+
+        private void ResetKeys_Click(object sender, RoutedEventArgs e)
+        {
+            GeneratePQ();
+            Encrypt();
         }
 
         private void SetKeys()
@@ -47,29 +60,40 @@ namespace LW2
         private void GeneratePQ()
         {
             Random rn = new();
-            BigInteger p, q;
-            do
-            {
-                p = Math.Abs(rn.Next(100000, 999999) * (int)Math.Pow(10, 6) + rn.Next(100000, 999999));
-            } while (!IsSimple(p));
-            do
-            {
-                q = Math.Abs(rn.Next(100000, 999999) * (int)Math.Pow(10, 6) + rn.Next(100000, 999999));
-            } while (!IsSimple(q));
+            int rows = NumberOfRowsInFile();
+
+            BigInteger p = GetSimpleFromFile(rn.Next(rows));
+            BigInteger q = GetSimpleFromFile(rn.Next(rows));
+
             tb_q.Text = q.ToString();
             tb_p.Text = p.ToString();
+
             rsa.CreateKeys(p, q);
             SetKeys();
         }
 
-        private bool IsSimple(BigInteger value)
+        private BigInteger GetSimpleFromFile(int rowNumber)
         {
-            for (BigInteger i = 2; i < value / 2; i++)
+            string path = "../../../Resources/simple12.txt";
+            BigInteger res;
+            using (StreamReader stream = new(path))
             {
-                if (value % i == 0)
-                    return false;
+                for (int i = 0; i < rowNumber; i++)
+                {
+                    stream.ReadLine();
+                }
+                res = BigInteger.Parse(stream.ReadLine());
             }
-            return true;
+            return res;
+        }
+
+        private int NumberOfRowsInFile()
+        {
+            string path = "../../../Resources/simple12.txt";
+            using (StreamReader stream = new(path))
+            {
+                return stream.ReadToEnd().Split("\n").Length;
+            }
         }
     }
 }

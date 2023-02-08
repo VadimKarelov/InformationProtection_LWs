@@ -16,11 +16,14 @@ namespace LW2
         /// <summary>
         /// Return private key d
         /// </summary>
-        public BigInteger CreateKeys(BigInteger p, BigInteger q)
+        public BigInteger CreateKeys(BigInteger pp, BigInteger qq)
         {
+            p = pp;
+            q = qq;
             n = p * q;
             d = GetD(p, q);
             e = GetE(p, q, d);
+            _isInitialized = true;
             return d;
         }
 
@@ -35,37 +38,33 @@ namespace LW2
         private BigInteger GetD(BigInteger p, BigInteger q)
         {
             BigInteger t = (p - 1) * (q - 1);
-            Random rn = new();
             BigInteger res;
-            do
-            {
-                res = rn.Next();
-                //res = t + 1;
-            } while (NOD(t, res) != 1);
-            return res;
-        }
 
-        private BigInteger NOD(BigInteger x, BigInteger y)
-        {
-            while (x != y)
+            // по порядку ищем взаимо простые числа от 2 до t + 1
+            for (res = 2; res < t + 1; res++)
             {
-                if (x > y)
-                    x = x - y;
-                else
-                    y = y - x;
+                if (t % res == 0)
+                {
+                    break;
+                }
             }
-            return x;
+
+            return res;
         }
 
         private BigInteger GetE(BigInteger p, BigInteger q, BigInteger d)
         {
             BigInteger t = (p - 1) * (q - 1);
-            Random rn = new();
-            BigInteger e;
-            do
-            {
-                e = rn.Next();
-            } while ((e * d) % t != 1);
+            BigInteger n;
+
+            for (n = 1; (n * t + 1) % d != 0; n++)
+            { }
+
+            BigInteger e = (t * n + 1) / d;
+
+            if ((e * d) % t != 1)
+                throw new Exception(((e * d) % t).ToString());
+
             return e;
         }
 
