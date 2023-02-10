@@ -11,6 +11,8 @@ namespace LW2
         public BigInteger n;
         public BigInteger d;
 
+        public readonly string Alphabet = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNMйцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ1234567890!\"№;%:?*()@#$^&-=_+{}[]\\|/<>.,'`ёЁ~";
+
         private bool _isInitialized = false;
 
         /// <summary>
@@ -40,10 +42,10 @@ namespace LW2
             BigInteger t = (p - 1) * (q - 1);
             BigInteger res;
 
-            // по порядку ищем взаимо простые числа от 2 до t + 1
-            for (res = 2; res < t + 1; res++)
+            // по порядку ищем взаимо простые числа от 3 до t + 1
+            for (res = 3; res < t + 1; res++)
             {
-                if (t % res == 0)
+                if (t % res != 0)
                 {
                     break;
                 }
@@ -73,7 +75,7 @@ namespace LW2
             BigInteger[] result = new BigInteger[s.Length];
             for (int i = 0; i < s.Length; i++)
             {
-                result[i] = (int)s[i];
+                result[i] = Alphabet.IndexOf(s[i]);
             }
             return result;
         }
@@ -83,7 +85,7 @@ namespace LW2
             string result = "";
             for (int i = 0; i < array.Length; i++)
             {
-                result += (char)array[i];
+                result += Alphabet[(int)array[i]];
             }
             return result;
         }

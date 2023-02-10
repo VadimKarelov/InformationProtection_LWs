@@ -7,4 +7,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="VMath">
+      <HintPath>..\..\..\..\..\..\Projects\C#\MyProjects\VMath\VMath\bin\Debug\net6.0\VMath.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
