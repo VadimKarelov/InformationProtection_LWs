@@ -11,7 +11,7 @@ namespace LW2
         public BigInteger n;
         public BigInteger d;
 
-        public readonly string Alphabet = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNMйцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ1234567890!\"№;%:?*()@#$^&-=_+{}[]\\|/<>.,'`ёЁ~";
+        public readonly string Alphabet = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNMйцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ1234567890!\"№;%:?*()@#$^&-=_+{}[]\\|/<>.,'`ёЁ~ ";
 
         private bool _isInitialized = false;
 
@@ -82,10 +82,11 @@ namespace LW2
 
         private string TransferNumberArrayToString(BigInteger[] array)
         {
+            // простой вывод чисел в столбик
             string result = "";
             for (int i = 0; i < array.Length; i++)
             {
-                result += Alphabet[(int)array[i]];
+                result += array[i].ToString() + "\n";
             }
             return result;
         }

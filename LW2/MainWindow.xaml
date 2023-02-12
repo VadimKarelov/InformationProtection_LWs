@@ -7,36 +7,45 @@
         mc:Ignorable="d"
         Title="LW2" Height="500" Width="800" FontSize="16" Background="Bisque">
     <Grid>
-        <StackPanel Orientation="Horizontal">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-            <StackPanel>
-                <TextBlock Text="Текст для шифровки"/>
-                <TextBox Width="400" Height="200" Name="tb_in" TextChanged="Encrypt_TextChanged" TextWrapping="Wrap"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Text="Текст для шифровки"/>
+            <TextBox Grid.Row="1" MinWidth="400" MinHeight="200" Name="tb_in" TextChanged="Encrypt_TextChanged" TextWrapping="Wrap"/>
 
-                <TextBlock Text="Зашифрованный текст"/>
-                <TextBox Width="400" Height="200" Name="tb_out" IsReadOnly="True" TextWrapping="Wrap"/>
-            </StackPanel>
+            <TextBlock Grid.Row="2" Text="Зашифрованный текст"/>
+            <TextBox Grid.Row="3" MinWidth="400" MinHeight="200" Name="tb_out" IsReadOnly="True" TextWrapping="Wrap"/>
+        </Grid>
 
-            <StackPanel Margin="50,20,50,0" Width="300">
-                <TextBlock Text="Число p"/>
-                <TextBox Name="tb_p" IsReadOnly="True" Background="LightBlue"/>
+        <StackPanel Margin="50,20,50,0" Width="300" Grid.Column="1">
+            <TextBlock Text="Число p"/>
+            <TextBox Name="tb_p" IsReadOnly="True" Background="LightBlue"/>
 
-                <TextBlock Text="Число q"/>
-                <TextBox Name="tb_q" IsReadOnly="True" Background="LightBlue"/>
+            <TextBlock Text="Число q"/>
+            <TextBox Name="tb_q" IsReadOnly="True" Background="LightBlue"/>
 
-                <TextBlock Text="Ключ e (публичный)"/>
-                <TextBox Name="tb_e" IsReadOnly="True" Background="LightBlue"/>
+            <TextBlock Text="Ключ e (публичный)"/>
+            <TextBox Name="tb_e" IsReadOnly="True" Background="LightBlue"/>
 
-                <TextBlock Text="Ключ n (публичный)"/>
-                <TextBox Name="tb_n" IsReadOnly="True" Background="LightBlue"/>
+            <TextBlock Text="Ключ n (публичный)"/>
+            <TextBox Name="tb_n" IsReadOnly="True" Background="LightBlue"/>
 
-                <TextBlock Text="Ключ d (приватный)"/>
-                <TextBox Name="tb_d" IsReadOnly="True" Background="LightBlue"/>
+            <TextBlock Text="Ключ d (приватный)"/>
+            <TextBox Name="tb_d" IsReadOnly="True" Background="LightBlue"/>
 
-                <Button Margin="0,20,0,0" Click="ResetKeys_Click">
-                    <TextBlock Text="Сгенерировать ключи заново"/>
-                </Button>
-            </StackPanel>
+            <Button Margin="0,20,0,0" Click="ResetKeys_Click">
+                <TextBlock Text="Сгенерировать ключи заново"/>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -3,7 +3,6 @@ using System.IO;
 using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Shapes;
 
 namespace LW2
 {
