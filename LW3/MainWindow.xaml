@@ -1,0 +1,73 @@
+﻿<Window x:Class="LW3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LW3"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" FontSize="16" Background="LightGreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Текст для шифровки"/>
+            <TextBox Grid.Row="1" MinWidth="400" MinHeight="200" Name="tb_in" TextWrapping="Wrap" TextChanged="Encrypt_TextChanged"/>
+
+            <TextBlock Grid.Row="2" Text="Зашифрованный текст"/>
+            <TextBox Grid.Row="3" MinWidth="400" MinHeight="200" Name="tb_out" IsReadOnly="True" TextWrapping="Wrap"/>
+        </Grid>
+
+        <StackPanel Grid.Column="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="21*"/>
+                    <RowDefinition Height="23*"/>
+                    <RowDefinition Height="21*"/>
+                    <RowDefinition Height="23*"/>
+                    <RowDefinition Height="21*"/>
+                    <RowDefinition Height="23*"/>
+                    <RowDefinition Height="21.28"/>
+                    <RowDefinition Height="23*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="g"/>
+                <TextBox Grid.Row="1" Grid.Column="0" Name="tb_g"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="p"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Name="tb_p"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="a"/>
+                <TextBox Grid.Row="3" Grid.Column="0" Name="tb_a"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="b"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Name="tb_b"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="A"/>
+                <TextBox Grid.Row="5" Grid.Column="0" Name="tb_A"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="B"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Name="tb_B"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Ka"/>
+                <TextBox Grid.Row="7" Grid.Column="0" Name="tb_Ka"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="1" Text="Kb"/>
+                <TextBox Grid.Row="7" Grid.Column="1" Name="tb_Kb"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>
