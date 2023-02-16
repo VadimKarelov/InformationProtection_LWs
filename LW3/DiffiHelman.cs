@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 
@@ -39,7 +40,7 @@ namespace LW3
         public static void GenerateKeys()
         {
             _p = GetRandomSimpleFromFile();
-            _g = GetRandomSimpleFromFile();
+            _g = Generator(_p);
             _a = GetRandomBigInteger();
             _b = GetRandomBigInteger();
             _A = BigInteger.ModPow(_g, _a, _p);
@@ -47,7 +48,7 @@ namespace LW3
             _Ka = BigInteger.ModPow(_B, _a, _p);
             _Kb = BigInteger.ModPow(_A, _b, _p);
             _K = _Ka;
-
+                
             if (_Ka != _Kb)
                 throw new Exception("Keys not equal");
         }
@@ -76,6 +77,31 @@ namespace LW3
         private static BigInteger GetRandomBigInteger()
         {
             return _rn.Next(1000000) * (BigInteger)1000000 + _rn.Next(1000000);
+        }
+
+        private static BigInteger Generator(BigInteger p)
+        {
+            List<BigInteger> fact = new();
+            BigInteger phi = p - 1, n = phi;
+            for (int i = 2; i * i <= n; ++i)
+            {
+                if (n % i == 0)
+                {
+                    fact.Add(i);
+                    while (n % i == 0)
+                        n /= i;
+                }
+            }
+            if (n > 1)
+                fact.Add(n);
+            for (int res = 2; res <= p; ++res)
+            {
+                bool ok = true;
+                for (int i = 0; i < fact.Count && ok; ++i)
+                    ok &= BigInteger.ModPow(res, phi / fact[i], p) != 1;
+                if (ok) return res;
+            }
+            return -1;
         }
     }
 }

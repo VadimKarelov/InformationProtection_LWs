@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,6 +15,8 @@ namespace LW3
             InitializeComponent();
             DiffiHelman.GenerateKeys();
             SetParameters();
+
+            Task();
         }
 
         private void SetParameters()
@@ -31,6 +34,30 @@ namespace LW3
         private void Encrypt_TextChanged(object sender, TextChangedEventArgs e)
         {
             tb_out.Text = SimpleEncrypter.Encrypt(tb_in.Text, DiffiHelman.K);
+        }
+
+        private void Task()
+        {
+            WriteTextToFile(SimpleEncrypter.Encrypt(ReadFile(), DiffiHelman.K));
+        }
+
+        private string ReadFile()
+        {
+            string text;
+            using (StreamReader stream = new("input.txt", false))
+            {
+                text = stream.ReadToEnd();
+            }
+            tb_in.Text = text;
+            return text;
+        }
+
+        private void WriteTextToFile(string text)
+        {
+            using (StreamWriter stream = new("output.txt", false))
+            {
+                stream.Write(text);
+            }
         }
     }
 }
