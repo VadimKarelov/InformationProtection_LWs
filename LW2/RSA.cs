@@ -96,7 +96,7 @@ namespace LW2
             BigInteger[] result = new BigInteger[array.Length];
             for (int i = 0; i < array.Length; i++)
             {
-                result[i] = (array[i] ^ e) % n;
+                result[i] = BigInteger.ModPow(array[i], e, n);
             }
             return result;
         }
