@@ -35,9 +35,28 @@ namespace LW3
             BigInteger[] result = new BigInteger[array.Length];
             for (int i = 0; i < array.Length; i++)
             {
-                result[i] = array[i] ^ key;
+                result[i] = Pow(array[i], key);
             }
             return result;
+        }
+
+        private static BigInteger Pow(BigInteger value, BigInteger exponent)
+        {
+            BigInteger res = value;
+            BigInteger pow = 1;
+            int increase = 8;
+            BigInteger part = exponent / increase;            
+            // pow 2
+            for (; pow < part; pow *= increase)
+            {
+                res = BigInteger.Pow(res, increase);
+            }
+            // remaining pows
+            for (; pow <= exponent; pow++)
+            {
+                res *= value;
+            }
+            return res;
         }
     }
 }
