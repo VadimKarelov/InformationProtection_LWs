@@ -12,7 +12,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Grid>
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -29,6 +29,27 @@
             <StackPanel Grid.Row="2">
                 <TextBlock Text="Зашифрованный текст"/>
                 <TextBox x:Name="tb_outputEncrypt" Background="LightCyan" TextWrapping="Wrap" IsReadOnly="True"/>
+            </StackPanel>
+
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Текст для расшифровки"/>
+                <TextBox x:Name="tb_inputDecrypt" Background="LightCyan" TextWrapping="Wrap" TextChanged="Decrypt_TextChanged"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1" Name="tb_decrypt"/>
+
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="Расшифрованный текст"/>
+                <TextBox x:Name="tb_outputDecrypt" Background="LightCyan" TextWrapping="Wrap" IsReadOnly="True"/>
             </StackPanel>
 
         </Grid>

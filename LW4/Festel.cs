@@ -44,13 +44,38 @@ namespace LW4
             return TransferArrayToString(toEncrypt);
         }
 
+        public static string Decrypt(string text)
+        {
+            _history = new();
+
+            // non decrypted
+            List<TBNumber> toDecrypt = TransferStringToArray(text);
+
+            List<TBNumber> backKeys = CloneList(_keys);
+            backKeys.Reverse();
+
+            DoManyRounds(toDecrypt, backKeys);
+
+            toDecrypt = DeleteExtraElement(toDecrypt);
+
+            return TransferArrayToString(toDecrypt);
+        }
+
         private static List<TBNumber> TransferStringToArray(string text)
         {
             List<TBNumber> resNumber = new();
 
             foreach (char c in text)
             {
-                resNumber.Add(new TBNumber(Convert.ToInt16(c)));
+                int n = Convert.ToInt32(c);
+
+                if (n > Int16.MaxValue)
+                {
+                    // to make number negative back
+                    n -= 65536;
+                }
+
+                resNumber.Add(new TBNumber(n));
             }
 
             return resNumber;
@@ -74,9 +99,20 @@ namespace LW4
             return res;
         }
 
+        private static List<TBNumber> DeleteExtraElement(List<TBNumber> number)
+        {
+            if (number[number.Count - 1].Value == 0)
+            {
+                number.RemoveAt(number.Count - 1);
+            }
+
+            return number;
+        }
+
         private static TBNumber F(TBNumber number, TBNumber key)
         {
-            return new TBNumber(number.Value * key.Value % Int16.MaxValue);
+            return new TBNumber((number.Value * key.Value) % Int16.MaxValue);
+            //return new TBNumber(number.Value + key.Value);
         }
 
         private static TBNumber GetNextKey(TBNumber key)
@@ -84,17 +120,13 @@ namespace LW4
             return key.LeftShift;
         }
 
-        /// <summary>
-        /// left & right values changing!
-        /// </summary>
         private static void Round(ref TBNumber left, ref TBNumber right, TBNumber key)
         {
-            TBNumber newLeft = right.XOR(F(left, key));
-            TBNumber newRight = left;
+            // значения переменных нужно смотреть в википедии
+            TBNumber x = F(right, key);
+            x = x.XOR(left);
 
-            // change values
-            left = newLeft;
-            right = newRight;
+            left = x;
         }
 
         // keys have computed before encryption/decryption
@@ -111,11 +143,28 @@ namespace LW4
                     TBNumber l = array[j];
                     TBNumber r = array[j + 1];
                     Round(ref l, ref r, keys[i]);
-                    array[j] = l;
-                    array[j + 1] = r;
+
+                    // на последнем раунде смена мест не нужна
+                    if (i < _roundsNumber - 1)
+                    {
+                        // еще не последний раунд => меняем местами
+                        array[j] = r;
+                        array[j + 1] = l;
+                    }
+                    else
+                    {
+                        // последний раунд => оставляем все как есть
+                        array[j] = l;
+                        array[j + 1] = r;
+                    }
                 }
             }
             _lastValue = array;
+        }
+
+        private static List<TBNumber> CloneList(List<TBNumber> list)
+        {
+            return list.Select(x => x.Clone()).ToList();
         }
     }
 }
