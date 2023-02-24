@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LW4
 {
@@ -30,6 +27,24 @@ namespace LW4
             }
         }
 
+        public TBNumber LeftShift
+        {
+            get
+            {
+                bool[] newNumber = new bool[16];
+                Array.Copy(_value, newNumber, _value.Length);
+
+                bool first = newNumber[0];
+                for (int i = 0; i < newNumber.Length - 1; i++)
+                {
+                    newNumber[i] = newNumber[i + 1];
+                }
+                newNumber[newNumber.Length - 1] = first;
+
+                return new TBNumber(newNumber);
+            }
+        }
+
         /// <summary>
         /// Standart order of bits - left most valuable
         /// </summary>
@@ -49,11 +64,41 @@ namespace LW4
         {
             Value = Convert.ToInt16(value);
         }
+
+        public TBNumber(bool[] array)
+        {
+            if (array.Length != 16)
+                throw new ArgumentException("Wrong array size - must be 16.");
+
+            _value = array;
+        }
         #endregion
 
         public override string ToString()
         {
             return Value.ToString();
+        }
+
+        public string Hex()
+        {
+            return "0x" + Convert.ToString(Value, 16);
+        }
+
+        public TBNumber XOR(TBNumber value)
+        {
+            bool[] newNumber = new bool[16];
+
+            for (int i = 0; i < 16; i++)
+            {
+                newNumber[i] = this._value[i] ^ value._value[i];
+            }
+
+            return new TBNumber(newNumber);
+        }
+
+        public TBNumber Clone()
+        {
+            return new TBNumber(this.Value);
         }
     }
 }
