@@ -6,28 +6,37 @@ namespace LW4
 {
     public static class Festel
     {
+        public static List<TBNumber> Keys => _keys;
+        public static List<List<TBNumber>> History => _history;
+        public static List<TBNumber> LastValue => _lastValue;
+
         private static int _roundsNumber = 10;
 
         private static List<TBNumber> _keys = new();
-        private static List<Pair> _history = new();
+        private static List<List<TBNumber>> _history = new();
+        private static List<TBNumber> _lastValue = new();
 
         public static void GenerateKeys()
         {
             _keys = new();
 
             Random rn = new Random();
-            _keys[0] = new TBNumber(rn.Next(30000));
+            _keys.Add(new TBNumber(rn.Next(30000)));
 
             for (int i = 1; i < _roundsNumber; i++)
             {
-                _keys[i] = _keys[i - 1].LeftShift;
+                _keys.Add(GetNextKey(_keys[i - 1]));
             }
         }
 
         public static string Encrypt(string text)
         {
+            _history = new();
+
             // non encrypted
             List<TBNumber> toEncrypt = TransferStringToArray(text);
+
+            MakeEvenElements(toEncrypt);
 
             DoManyRounds(toEncrypt, _keys);
             // array encrypted
@@ -47,9 +56,22 @@ namespace LW4
             return resNumber;
         }
 
+        private static void MakeEvenElements(List<TBNumber> number)
+        {
+            if (number.Count % 2 != 0)
+            {
+                number.Add(new TBNumber(0));
+            }
+        }
+
         private static string TransferArrayToString(List<TBNumber> number)
         {
-            return number.Select(x => (char)x.Value).ToString();
+            string res = "";
+            foreach (TBNumber num in number)
+            {
+                res += (char)num.Value;
+            }
+            return res;
         }
 
         private static TBNumber F(TBNumber number, TBNumber key)
@@ -65,13 +87,10 @@ namespace LW4
         /// <summary>
         /// left & right values changing!
         /// </summary>
-        private static void Round(TBNumber left, TBNumber right, TBNumber key)
+        private static void Round(ref TBNumber left, ref TBNumber right, TBNumber key)
         {
-            TBNumber newLeft = right.XOR(key);
+            TBNumber newLeft = right.XOR(F(left, key));
             TBNumber newRight = left;
-
-            // save values for showing it on ui
-            _history.Add(new Pair(left.Clone(), right.Clone()));
 
             // change values
             left = newLeft;
@@ -83,24 +102,20 @@ namespace LW4
         {
             for (int i = 0; i < _roundsNumber; i++)
             {
+                // save for showing on ui
+                _history.Add(array.Select(x => x.Clone()).ToList());
+
                 // exception might be in case: arrays has not even number of elements
                 for (int j = 0; j < array.Count; j += 2)
                 {
-                    Round(array[j], array[j + 1], keys[i]);                    
+                    TBNumber l = array[j];
+                    TBNumber r = array[j + 1];
+                    Round(ref l, ref r, keys[i]);
+                    array[j] = l;
+                    array[j + 1] = r;
                 }
             }
-        }
-    }
-
-    internal class Pair
-    {
-        public TBNumber Left;
-        public TBNumber Right;
-
-        public Pair(TBNumber left, TBNumber right)
-        {
-            Left = left;
-            Right = right;
+            _lastValue = array;
         }
     }
 }

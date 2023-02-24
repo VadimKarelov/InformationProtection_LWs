@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LW4"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="LW4" Height="500" Width="800" Background="LightGreen" FontSize="15">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Текст для шифровки"/>
+                <TextBox x:Name="tb_inputEncrypt" Background="LightCyan" TextWrapping="Wrap" TextChanged="Encrypt_TextChanged"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1" Name="tb_encrypt"/>
+
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="Зашифрованный текст"/>
+                <TextBox x:Name="tb_outputEncrypt" Background="LightCyan" TextWrapping="Wrap" IsReadOnly="True"/>
+            </StackPanel>
+
+        </Grid>
     </Grid>
 </Window>
