@@ -26,6 +26,9 @@
 
             <TextBlock Text="Результат проверки"/>
             <TextBlock x:Name="tb_checkResult"/>
+
+            <TextBlock Text="Преобразование исправленного сообщения в текст"/>
+            <TextBox x:Name="tb_correctedText"/>
         </StackPanel>
     </Grid>
 </Window>

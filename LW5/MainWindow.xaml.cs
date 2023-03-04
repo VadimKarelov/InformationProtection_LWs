@@ -23,6 +23,7 @@ namespace LW5
         {
             bool f = Hamming.IsMessageNotCorrupted(tb_bits.Text, out int corruptedBit);
             tb_checkResult.Text = f ? "Сообщение не повреждено" : $"Поврежденнй бит: {corruptedBit}";
+            tb_correctedText.Text = Hamming.CorrectMessageAndConvertToString(tb_bits.Text, corruptedBit);
         }
     }
 }
