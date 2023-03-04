@@ -1,5 +1,6 @@
 ﻿using System.Collections;
-using System.Diagnostics.Contracts;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace LW5.BackgroundModules
@@ -35,7 +36,7 @@ namespace LW5.BackgroundModules
                 {
                     int n = 0;
                     
-                    while (n < pos)
+                    while (n < pos && ind + n < chars.Count)
                     {
                         if (chars[ind + n] == '1')
                         {
@@ -73,7 +74,7 @@ namespace LW5.BackgroundModules
                 {
                     int n = 0;
 
-                    while (n < pos)
+                    while (n < pos && ind + n < chars.Count)
                     {
                         if (chars[ind + n] == '1')
                         {
@@ -85,7 +86,10 @@ namespace LW5.BackgroundModules
                     ind = ind + pos * 2;
                 }
 
-                char b = counter % 2 == 1 ? '1' : '0';
+                if (chars[pos - 1] == '1')
+                    counter--;
+
+                char b = counter % 2 == 0 ? '0' : '1';
 
                 if (chars[pos - 1] != b)
                 {

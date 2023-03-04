@@ -5,8 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LW5"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="LW5" Height="400" Width="400">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>            
+        </Style>
 
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="Текст для отправки"/>
+            <TextBox x:Name="tb_input" TextChanged="Convert_TextChanged"/>
+
+            <TextBlock Text="Текст в битах"/>
+            <TextBox x:Name="tb_bits" TextChanged="Check_TextChanged"/>
+
+            <TextBlock Text="Результат проверки"/>
+            <TextBlock x:Name="tb_checkResult"/>
+        </StackPanel>
     </Grid>
 </Window>
