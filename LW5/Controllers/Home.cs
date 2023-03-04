@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LW5.BackgroundModules;
+using LW5.Views.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LW5.Controllers
@@ -14,7 +16,8 @@ namespace LW5.Controllers
         // текст для перевода в двоичный код
         public ActionResult TransferToBinary(string textToSend)
         {
-            return View();
+            string converted = Hamming.ConvertToBits(textToSend);
+            return View(new ConvertOnlyViewModel() { ConvertedText = converted, NotConvertedText = textToSend });
         }
 
         // проверка текста на правильность передачи
