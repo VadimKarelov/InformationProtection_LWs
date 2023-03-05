@@ -25,7 +25,7 @@ namespace LW6
             // add file length
             res += text.Length;
 
-            compressed = ((double)text.Length - res.Length) / text.Length;
+            compressed = ((double)text.Length - res.Split('/').Length * 4) / text.Length;
 
             return res;
         }
