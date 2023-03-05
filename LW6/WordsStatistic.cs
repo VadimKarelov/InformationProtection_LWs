@@ -1,7 +1,7 @@
 ﻿#pragma warning disable SYSLIB0011
 
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -10,7 +10,7 @@ namespace LW6
 {
     public static class WordsStatistic
     {
-        public static Dictionary<char, PointF> Statistic
+        public static Dictionary<char, Pair> Statistic
         {
             get
             {
@@ -39,10 +39,16 @@ namespace LW6
 
         private static bool _isInit = false;
 
-        private static Dictionary<char, PointF> _stat;
+        private static Dictionary<char, Pair> _stat;
 
         private static readonly string pathToExample = @"..\..\..\Resources\text_example.txt";
         private static readonly string pathToStat = @"..\..\..\Resources\statistics.dat";
+
+        static WordsStatistic()
+        {
+            CountStatistic();
+            _isInit = true;
+        }
 
         private static void CountStatistic()
         {
@@ -76,7 +82,7 @@ namespace LW6
             int total = file.Length;
 
             // find chance for each symbol
-            charNumber = charNumber.Select(x => new SymbStat(x.Symbol, x.Number / total)).OrderBy(x => x.Number).ToList();
+            charNumber = charNumber.Select(x => new SymbStat(x.Symbol, x.Number / total)).OrderByDescending(x => x.Number).ToList();
 
             _stat = new();
             // add data to dictionary
@@ -84,7 +90,7 @@ namespace LW6
             foreach (SymbStat pair in charNumber)
             {
                 // symbol, (left, right)
-                _stat.Add(pair.Symbol, new PointF(previosBorder, previosBorder + pair.Number));
+                _stat.Add(pair.Symbol, new Pair(previosBorder, previosBorder + pair.Number));
                 previosBorder = previosBorder + pair.Number;
             }
         }
@@ -105,7 +111,7 @@ namespace LW6
 
             using (FileStream fs = new FileStream(pathToStat, FileMode.OpenOrCreate))
             {
-                _stat = (Dictionary<char, PointF>)binaryFormatter.Deserialize(fs);
+                _stat = (Dictionary<char, Pair>)binaryFormatter.Deserialize(fs);
             }
         }
 
@@ -119,6 +125,19 @@ namespace LW6
                 Symbol = symbol;
                 Number = number;
             }
+        }
+    }
+
+    [Serializable]
+    public class Pair
+    {
+        public double L;
+        public double R;
+
+        public Pair(double l, double r)
+        {
+            L = l;
+            R = r;
         }
     }
 }

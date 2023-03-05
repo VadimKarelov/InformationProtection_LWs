@@ -24,7 +24,7 @@ namespace LW6
         {
             InitializeComponent();
 
-            string t = AriphmeticEncoding.Compression("мама мыла раму поздним вечером", out float f);
+            string t = AriphmeticEncoding.Compression("мама мыла раму поздним вечером, то есть перед закатом, не забывая при этом об дркгих своих обязанностях", out double f);
             string t2 = AriphmeticEncoding.Decompression(t);
         }
     }

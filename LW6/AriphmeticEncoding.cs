@@ -9,9 +9,9 @@ namespace LW6
 {
     public static class AriphmeticEncoding
     {
-        private static readonly int numberOfSymbolsInBlock = 2;
+        private static readonly int numberOfSymbolsInBlock = 10;
 
-        public static string Compression(string text, out float compressed)
+        public static string Compression(string text, out double compressed)
         {
             text = text.ToLower();
 
@@ -22,7 +22,10 @@ namespace LW6
                 res += CompressBlock(text, i) + '/';
             }
 
-            compressed = ((float)text.Length - res.Length) / text.Length;
+            // add file length
+            res += text.Length;
+
+            compressed = ((double)text.Length - res.Length) / text.Length;
 
             return res;
         }
@@ -31,18 +34,27 @@ namespace LW6
         {
             string res = "";
 
-            float[] blocks = text.Split('/').Where(x => !string.IsNullOrEmpty(x)).Select(float.Parse).ToArray();
+            List<double> blocks = text.Split('/').Where(x => !string.IsNullOrEmpty(x)).Select(double.Parse).ToList();
+            // get number of symbols and remove it from blocks
+            int numberOfSymbols = (int)blocks.Last();
+            blocks.Remove(blocks.Count - 1);
 
-            foreach (float block in blocks)
+            int symbolsDecompressed = 0;
+
+            foreach (double block in blocks)
             {
-                for (int i = 0; i < numberOfSymbolsInBlock; i++) // just counter
-                {
-                    float code = block;
+                double code = block;
 
+                for (int i = 0; i < numberOfSymbolsInBlock && symbolsDecompressed < numberOfSymbols; i++, symbolsDecompressed++) // just counter
+                {
                     // find symbol in dictionary
-                    char c = WordsStatistic.Statistic.First(x => x.Value.X <= code && x.Value.Y > code).Key;
+                    KeyValuePair<char, Pair> pair = WordsStatistic.Statistic.First(x => x.Value.L <= code && x.Value.R > code);
+
+                    char c = pair.Key;
 
                     res += c.ToString();
+
+                    code = (code - pair.Value.L) / (pair.Value.R - pair.Value.L);
                 }
             }
 
@@ -51,14 +63,14 @@ namespace LW6
 
         private static string CompressBlock(string text, int startIndex)
         {
-            float outNumber = 0, lowBorder = 0, highBorder = 1;
+            double outNumber = 0, lowBorder = 0, highBorder = 1;
 
             for (int i = startIndex; i < startIndex + numberOfSymbolsInBlock && i < text.Length; i++)
             {
-                PointF cBorders = WordsStatistic.Statistic[text[i]];
-                float oldLow = lowBorder, oldHigh = highBorder;
-                highBorder = oldLow + (oldHigh - oldLow) * cBorders.Y;
-                lowBorder = oldLow + (oldHigh - oldLow) * cBorders.X;
+                Pair cBorders = WordsStatistic.Statistic[text[i]];
+                double oldLow = lowBorder, oldHigh = highBorder;
+                highBorder = oldLow + (oldHigh - oldLow) * cBorders.R;
+                lowBorder = oldLow + (oldHigh - oldLow) * cBorders.L;
             }
 
             return ((lowBorder + highBorder) / 2).ToString("F30");
