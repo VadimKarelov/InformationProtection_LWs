@@ -41,8 +41,8 @@ namespace LW6
 
         private static Dictionary<char, PointF> _stat;
 
-        private static readonly string pathToExample = @"..\..\Resources\text_example.txt";
-        private static readonly string pathToStat = @"..\..\Resources\statistics.dat";
+        private static readonly string pathToExample = @"..\..\..\Resources\text_example.txt";
+        private static readonly string pathToStat = @"..\..\..\Resources\statistics.dat";
 
         private static void CountStatistic()
         {
@@ -53,14 +53,18 @@ namespace LW6
                 file = sr.ReadToEnd();
             }
 
+            file = file.ToLower();
+
             List<SymbStat> charNumber = new();
 
             // count number of each symbol
             foreach (char c in file)
             {
-                SymbStat s = charNumber.First(x => x.Symbol == c);
-                if (s is not null)
+                bool f = charNumber.Where(x => x.Symbol == c).Count() > 0;
+                
+                if (f)
                 {
+                    SymbStat s = charNumber.First(x => x.Symbol == c);
                     s.Number++;
                 }
                 else
@@ -81,6 +85,7 @@ namespace LW6
             {
                 // symbol, (left, right)
                 _stat.Add(pair.Symbol, new PointF(previosBorder, previosBorder + pair.Number));
+                previosBorder = previosBorder + pair.Number;
             }
         }
 

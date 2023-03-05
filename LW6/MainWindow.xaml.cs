@@ -23,6 +23,9 @@ namespace LW6
         public MainWindow()
         {
             InitializeComponent();
+
+            string t = AriphmeticEncoding.Compression("мама мыла раму поздним вечером", out float f);
+            string t2 = AriphmeticEncoding.Decompression(t);
         }
     }
 }
