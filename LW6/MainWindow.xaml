@@ -16,7 +16,7 @@
                         <ColumnDefinition Width="0.2*"/>
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0"/>
-                    <Button Grid.Column="1" Content="Обзор"/>
+                    <Button Grid.Column="1" Content="Обзор" Click="OpenFile_Click"/>
                 </Grid>
             </StackPanel>
 

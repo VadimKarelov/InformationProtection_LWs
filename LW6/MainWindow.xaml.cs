@@ -57,7 +57,7 @@ namespace LW6
 
             string compressed = (bits.Count * 100 / sourceTetxSize).ToString();
 
-            MessageBox.Show($"Сжатый файл составляет {compressed}% от исходного");
+            MessageBox.Show($"Сжатый файл составляет {compressed}% от исходного.");
         }
 
         private async void WriteFileAsync(BitArray bits)
