@@ -37,6 +37,21 @@ namespace LW6
             }
         }
 
+        public static string ExampleFile
+        {
+            get
+            {
+                string file;
+
+                using (StreamReader sr = new StreamReader(pathToExample))
+                {
+                    file = sr.ReadToEnd();
+                }
+
+                return file.ToLower();
+            }
+        }
+
         private static bool _isInit = false;
 
         private static Dictionary<char, Pair> _stat;
@@ -52,14 +67,7 @@ namespace LW6
 
         private static void CountStatistic()
         {
-            string file;
-
-            using (StreamReader sr = new StreamReader(pathToExample))
-            {
-                file = sr.ReadToEnd();
-            }
-
-            file = file.ToLower();
+            string file = ExampleFile;
 
             List<SymbStat> charNumber = new();
 

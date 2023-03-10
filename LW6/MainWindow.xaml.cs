@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,12 +23,59 @@ namespace LW6
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string _catalog;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            string t = AriphmeticEncoding.Compression("мама мыла раму поздним вечером, то есть перед закатом, не забывая при этом об дркгих своих обязанностях", out double f);
-            string t2 = AriphmeticEncoding.Decompression(t);
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog f = new();
+            
+            if (f.ShowDialog() == true)
+            {
+                _catalog = f.FileName.Remove(f.FileName.LastIndexOf("\\"));
+            }
+        }
+
+        private void Encode(string text)
+        {
+            // init huffman
+            HuffmanTree tree = new();
+            tree.Build(WordsStatistic.ExampleFile);
+
+            // in bits
+            int sourceTetxSize = text.Length * 32;
+
+            string ariphmetic = AriphmeticEncoding.Compression(text, out double t);
+
+            BitArray bits = tree.Encode(ariphmetic);
+
+            WriteFileAsync(bits);
+
+            string compressed = (bits.Count * 100 / sourceTetxSize).ToString();
+
+            MessageBox.Show($"Сжатый файл составляет {compressed}% от исходного");
+        }
+
+        private async void WriteFileAsync(BitArray bits)
+        {
+            await Task.Run(() =>
+            {
+                string text = "";
+
+                foreach (bool bit in bits)
+                {
+                    text += bit ? "1" : "0";
+                }
+
+                using (StreamWriter writer = new(_catalog + "output.txt"))
+                {
+                    writer.Write(text);
+                }
+            });
         }
     }
 }
