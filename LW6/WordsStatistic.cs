@@ -14,26 +14,7 @@ namespace LW6
         {
             get
             {
-                if (_isInit)
-                {
-                    return _stat;
-                }
-                else
-                {
-                    if (File.Exists(pathToStat))
-                    {
-                        LoadStatistic();
-                        _isInit = true;
-                        return _stat;
-                    }
-                    else
-                    {
-                        CountStatistic();
-                        SaveStatistic();
-                        _isInit = true;
-                        return _stat;
-                    }
-                }
+                return _stat;
             }
         }
 
@@ -58,11 +39,54 @@ namespace LW6
 
         private static readonly string pathToExample = @"..\..\..\Resources\text_example.txt";
         private static readonly string pathToStat = @"..\..\..\Resources\statistics.dat";
+        private static readonly string pathToSymbolsCounter = @"..\..\..\Resources\symbols.txt";
 
         static WordsStatistic()
         {
-            CountStatistic();
-            _isInit = true;
+            if (IsExampleFileChanged())
+            {
+                CountStatistic();
+                SaveStatistic();
+            }
+            else if (!File.Exists(pathToStat))
+            {
+                CountStatistic();
+                SaveStatistic();
+            }
+            else
+            {
+                LoadStatistic();
+            }
+        }
+
+        private static bool IsExampleFileChanged()
+        {
+            if (!File.Exists(pathToSymbolsCounter) || !File.Exists(pathToExample))
+                return true;
+
+            int n, m;
+
+            using (StreamReader reader = new(pathToExample))
+            {
+                n = reader.ReadToEnd().Length;
+            }
+
+            using (StreamReader reader = new(pathToSymbolsCounter))
+            {
+                if (!int.TryParse(reader.ReadToEnd(), out m))
+                {
+                    m = -1;
+                }
+            }
+
+            if (n != m)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         private static void CountStatistic()
@@ -100,6 +124,11 @@ namespace LW6
                 // symbol, (left, right)
                 _stat.Add(pair.Symbol, new Pair(previosBorder, previosBorder + pair.Number));
                 previosBorder = previosBorder + pair.Number;
+            }
+
+            using (StreamWriter writer = new(pathToSymbolsCounter))
+            {
+                writer.Write(total);
             }
         }
 
