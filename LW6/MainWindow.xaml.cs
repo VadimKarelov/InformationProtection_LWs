@@ -1,20 +1,9 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LW6
 {
@@ -30,13 +19,29 @@ namespace LW6
             InitializeComponent();
         }
 
+        private void OpenCompressedFile_Click(object sender, RoutedEventArgs e)
+        {
+            string path = _catalog + "\\output.txt";
+            Process.Start("C:\\Windows\\System32\\notepad.exe", path);
+        }
+
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog f = new();
             
             if (f.ShowDialog() == true)
             {
-                _catalog = f.FileName.Remove(f.FileName.LastIndexOf("\\"));
+                _catalog = f.FileName.Remove(f.FileName.LastIndexOf("\\"));   
+                tb_inputFile.Text = f.FileName;
+
+                string text;
+
+                using (StreamReader reader = new(f.FileName))
+                {
+                    text = reader.ReadToEnd();
+                }
+
+                Encode(text);
             }
         }
 
@@ -53,29 +58,28 @@ namespace LW6
 
             BitArray bits = tree.Encode(ariphmetic);
 
-            WriteFileAsync(bits);
+            WriteFile(bits);
 
             string compressed = (bits.Count * 100 / sourceTetxSize).ToString();
 
             MessageBox.Show($"Сжатый файл составляет {compressed}% от исходного.");
         }
 
-        private async void WriteFileAsync(BitArray bits)
+        private void WriteFile(BitArray bits)
         {
-            await Task.Run(() =>
+            tb_outputFile.Text = _catalog + "\\output.txt";
+
+            string text = "";
+
+            foreach (bool bit in bits)
             {
-                string text = "";
+                text += bit ? "1" : "0";
+            }
 
-                foreach (bool bit in bits)
-                {
-                    text += bit ? "1" : "0";
-                }
-
-                using (StreamWriter writer = new(_catalog + "output.txt"))
-                {
-                    writer.Write(text);
-                }
-            });
+            using (StreamWriter writer = new(_catalog + "\\output.txt"))
+            {
+                writer.Write(text);
+            }
         }
     }
 }
