@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LW8"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="LW8" Height="400" Width="500" FontSize="14" Background="LightGreen">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </Window.Resources>
     <Grid>
+        <StackPanel>
+            <TextBlock Text="Поле ввода"/>
+            <TextBox x:Name="tb_input" TextChanged="TextBoxInput_TextChanged"/>
 
+            <TextBlock Text="Гамма"/>
+            <TextBox x:Name="tb_gamma" TextChanged="TextBoxGamma_TextChanged"/>
+
+            <TextBlock Text="Зашифрованное сообщение"/>
+            <TextBox x:Name="tb_encrypted" TextChanged="TextBoxEncrypted_TextChanged"/>
+
+            <TextBlock Text="Расшифрованное сообщение"/>
+            <TextBox x:Name="tb_decrypted"/>
+        </StackPanel>
     </Grid>
 </Window>
