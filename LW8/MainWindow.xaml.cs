@@ -26,8 +26,11 @@ namespace LW8
 
         private void ChangeGamma()
         {
-            Gammirovanie.Gamma = tb_gamma.Text;
-            Encrypt(); // will cause event to decrypt
+            if (tb_gamma.Text.Length > 0)
+            {
+                Gammirovanie.Gamma = tb_gamma.Text;
+                Encrypt(); // will cause event to decrypt
+            }
         }
 
         private void TextBoxInput_TextChanged(object sender, TextChangedEventArgs e)
